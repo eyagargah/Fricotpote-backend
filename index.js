@@ -4,10 +4,9 @@ const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { MongoClient } = require("mongodb");
-
-const uri =
-  "mongodb+srv://eyagargah:mypassword@cluster0.s98m2ta.mongodb.net/test";
-
+require('dotenv').config()
+const uri =  process.env.uri;
+const port = process.env.port;
 /*******Cors********/
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:4200");
@@ -264,4 +263,4 @@ app.post('/message', async (req, res) => {
 })
 
 
-app.listen(8000, () => console.log(`Server Started at ${8000}`));
+app.listen(port, () => console.log(`Server Started at ${port}`));
