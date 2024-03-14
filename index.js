@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { MongoClient } = require("mongodb");
 require('dotenv').config()
 const uri =  process.env.uri;
+
 const port = process.env.port;
 /*******Cors********/
 app.use(function (req, res, next) {
