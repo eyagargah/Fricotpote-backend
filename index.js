@@ -3,7 +3,7 @@ const app = express();
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { MongoClient } = require("mongodb");
+const { MongoClient , ServerApiVersion } = require("mongodb").MongoClient;
 require('dotenv').config()
 const uri =  process.env.uri;
 
@@ -31,7 +31,13 @@ app.get("/", (req, res) => {
 /*********User Methods*******/
 //get user
 app.get("/user", async (req, res) => {
-  const client = new MongoClient(uri);
+  const client = new MongoClient(uri , {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    }
+  });
   const userId = req.query.userId;
 
   try {
@@ -43,6 +49,7 @@ app.get("/user", async (req, res) => {
 
     const user = await users.findOne(query);
     res.send(user);
+    res.json(user)
   } finally {
     await client.close();
   }
