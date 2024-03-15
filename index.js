@@ -29,7 +29,6 @@ app.get("/", (req, res) => {
 });
 
 /*********User Methods*******/
-
 //get user
 app.get("/user", async (req, res) => {
   const client = new MongoClient(uri);
@@ -93,6 +92,7 @@ app.post("/signup", async (req, res) => {
   const hashed_password = await bcrypt.hash(password, 10);
 
   try {
+    
     await client.connect();
     const db = client.db("app-data");
     const users = db.collection("users");
