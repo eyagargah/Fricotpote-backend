@@ -3,7 +3,7 @@ const app = express();
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { MongoClient } = require("mongodb").MongoClient;
+const { MongoClient } = require("mongodb");
 require('dotenv').config()
 const uri =  process.env.uri;
 
