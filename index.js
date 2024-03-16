@@ -3,7 +3,12 @@ const app = express();
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { MongoClient } = require("mongodb");
+const { MongoClient , MongoServerSelectionError  } = require("mongodb");
+const options = {
+  serverSelectionTimeoutMS: 10000 // Example timeout value in milliseconds
+};
+
+const timeoutError = new MongoServerSelectionError(`Server selection timed out after ${options.serverSelectionTimeoutMS} ms`);
 require('dotenv').config()
 const uri =  process.env.uri;
 
