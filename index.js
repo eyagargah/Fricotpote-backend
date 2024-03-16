@@ -44,7 +44,6 @@ app.get("/user", async (req, res) => {
 
     const user = await users.findOne(query);
     res.send(user);
-    res.json(user)
   } finally {
     await client.close();
   }
