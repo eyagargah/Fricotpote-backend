@@ -84,7 +84,7 @@ app.put("/user", async (req, res) => {
 });
  //update user preferences
 
- app.put("/user", async (req, res) => {
+ app.put("/user-preferences", async (req, res) => {
   const client = new MongoClient(uri);
   const formData = req.body.formData;
   try {
