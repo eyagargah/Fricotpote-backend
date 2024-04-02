@@ -82,6 +82,38 @@ app.put("/user", async (req, res) => {
     await client.close();
   }
 });
+ //update user preferences
+ app.put("/user", async (req, res) => {
+  const client = new MongoClient(uri);
+  const formData = req.body.formData;
+  try {
+    await client.connect();
+    const db = client.db("app-data");
+    const users = db.collection("users");
+
+    const query = { user_id: formData.user_id };
+
+    const updateDocument = {
+      $set: {
+        first_name: formData.first_name,
+        dob_day: formData.dob_day,
+        dob_month: formData.dob_month,
+        dob_year: formData.dob_year,
+        show_gender: formData.show_gender,
+        gender_identity: formData.gender_identity,
+        gender_interest: formData.gender_interest,
+        url: formData.url,
+        about: formData.about,
+        matches: formData.matches,
+      },
+    };
+
+    const insertedUser = await users.updateOne(query, updateDocument);
+    res.send(insertedUser);
+  } finally {
+    await client.close();
+  }
+});
 
 /**********Account Management**************/
 //sign up
