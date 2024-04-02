@@ -83,6 +83,7 @@ app.put("/user", async (req, res) => {
   }
 });
  //update user preferences
+
  app.put("/user", async (req, res) => {
   const client = new MongoClient(uri);
   const formData = req.body.formData;
@@ -95,16 +96,10 @@ app.put("/user", async (req, res) => {
 
     const updateDocument = {
       $set: {
-        first_name: formData.first_name,
-        dob_day: formData.dob_day,
-        dob_month: formData.dob_month,
-        dob_year: formData.dob_year,
-        show_gender: formData.show_gender,
-        gender_identity: formData.gender_identity,
-        gender_interest: formData.gender_interest,
-        url: formData.url,
-        about: formData.about,
-        matches: formData.matches,
+        location: formData.location,
+        diet: formData.diet,
+        age_preference: formData.age_preference,
+        distance: formData.distance,
       },
     };
 
