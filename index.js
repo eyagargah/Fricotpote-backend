@@ -232,15 +232,15 @@ app.get('/gendered-users', async (req, res) => {
 })
 
 //get users by distance
-app.get('/gendered-users', async (req, res) => {
+app.get('/closeby-users', async (req, res) => {
   const client = new MongoClient(uri)
-  const gender = req.query.gender
+  const distance = req.query.distance
 
   try {
       await client.connect()
       const database = client.db('app-data')
       const users = database.collection('users')
-      const query = {gender_identity: {$eq: gender}}
+      const query = {distance: {$eq: distance}}
       const foundUsers = await users.find(query).toArray()
       res.json(foundUsers)
 
