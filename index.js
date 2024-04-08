@@ -240,7 +240,7 @@ app.get('/closeby-users', async (req, res) => {
       await client.connect()
       const database = client.db('app-data')
       const users = database.collection('users')
-      const query = {distance: {$eq: distance}}
+      const query = {distance: {$lte: distance}}
       const foundUsers = await users.find(query).toArray()
       res.json(foundUsers)
 
