@@ -249,6 +249,25 @@ app.get('/closeby-users', async (req, res) => {
   }
 })
 
+//get users by diet
+app.get('/diet-users', async (req, res) => {
+  const client = new MongoClient(uri)
+  const diet = req.query.diet
+
+  try {
+      await client.connect()
+      const database = client.db('app-data')
+      const users = database.collection('users')
+      const query = {diet: {$eq: diet}}
+      const foundUsers = await users.find(query).toArray()
+      res.json(foundUsers)
+
+  } finally {
+      await client.close()
+  }
+})
+
+
 // Update User with a match
 app.put('/addmatch', async (req, res) => {
   const client = new MongoClient(uri)
