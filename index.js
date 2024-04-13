@@ -267,6 +267,22 @@ app.get('/diet-users', async (req, res) => {
   }
 })
 
+app.get('/age-users', async (req, res) => {
+  const client = new MongoClient(uri)
+  const age = req.query.age
+
+  try {
+      await client.connect()
+      const database = client.db('app-data')
+      const users = database.collection('users')
+      const query = {age: {$lte: age}}
+      const foundUsers = await users.find(query).toArray()
+      res.json(foundUsers)
+
+  } finally {
+      await client.close()
+  }
+})
 
 // Update User with a match
 app.put('/addmatch', async (req, res) => {
