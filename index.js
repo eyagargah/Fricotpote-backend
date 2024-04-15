@@ -268,6 +268,7 @@ app.get('/diet-users', async (req, res) => {
   }
 })
 
+//get users by age
 app.get('/age-users', async (req, res) => {
   const client = new MongoClient(uri)
   const age = req.query.age
