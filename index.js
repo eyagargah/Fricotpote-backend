@@ -3,10 +3,10 @@ const app = express();
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { MongoClient  } = require("mongodb");
+const { MongoClient } = require("mongodb");
 
-require('dotenv').config()
-const uri =  process.env.uri;
+require("dotenv").config();
+const uri = process.env.uri;
 
 const port = process.env.port;
 /*******Cors********/
@@ -23,7 +23,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(express.json({limit: '20mb'}));
+app.use(express.json({ limit: "20mb" }));
 
 app.get("/", (req, res) => {
   res.json("hello to my app");
@@ -64,7 +64,7 @@ app.put("/user", async (req, res) => {
     const updateDocument = {
       $set: {
         first_name: formData.first_name,
-        age:formData.age,
+        age: formData.age,
         dob_day: formData.dob_day,
         dob_month: formData.dob_month,
         dob_year: formData.dob_year,
@@ -74,7 +74,7 @@ app.put("/user", async (req, res) => {
         url: formData.url,
         about: formData.about,
         matches: formData.matches,
-        likes : formData.likes
+        likes: formData.likes,
       },
     };
 
@@ -84,9 +84,9 @@ app.put("/user", async (req, res) => {
     await client.close();
   }
 });
- //update user preferences
+//update user preferences
 
- app.put("/user-preferences", async (req, res) => {
+app.put("/user-preferences", async (req, res) => {
   const client = new MongoClient(uri);
   const formData = req.body.formData;
   try {
@@ -122,7 +122,6 @@ app.post("/signup", async (req, res) => {
   const hashed_password = await bcrypt.hash(password, 10);
 
   try {
-
     await client.connect();
     const db = client.db("app-data");
     const users = db.collection("users");
@@ -185,187 +184,178 @@ app.post("/login", async (req, res) => {
 });
 
 // Get all Users by userIds in the Database
-app.get('/users', async (req, res) => {
-  const client = new MongoClient(uri)
-  const userIds = JSON.parse(req.query.userIds)
+app.get("/users", async (req, res) => {
+  const client = new MongoClient(uri);
+  const userIds = JSON.parse(req.query.userIds);
 
   try {
-      await client.connect()
-      const database = client.db('app-data')
-      const users = database.collection('users')
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
 
-      const pipeline =
-          [
-              {
-                  '$match': {
-                      'user_id': {
-                          '$in': userIds
-                      }
-                  }
-              }
-          ]
+    const pipeline = [
+      {
+        $match: {
+          user_id: {
+            $in: userIds,
+          },
+        },
+      },
+    ];
 
-      const foundUsers = await users.aggregate(pipeline).toArray()
+    const foundUsers = await users.aggregate(pipeline).toArray();
 
-      res.json(foundUsers)
-
+    res.json(foundUsers);
   } finally {
-      await client.close()
+    await client.close();
   }
-})
-
+});
 
 //get users by gender
-app.get('/gendered-users', async (req, res) => {
-  const client = new MongoClient(uri)
-  const gender = req.query.gender
+app.get("/gendered-users", async (req, res) => {
+  const client = new MongoClient(uri);
+  const gender = req.query.gender;
 
   try {
-      await client.connect()
-      const database = client.db('app-data')
-      const users = database.collection('users')
-      const query = {gender_identity: {$eq: gender}}
-      const foundUsers = await users.find(query).toArray()
-      res.json(foundUsers)
-
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
+    const query = { gender_identity: { $eq: gender } };
+    const foundUsers = await users.find(query).toArray();
+    res.json(foundUsers);
   } finally {
-      await client.close()
+    await client.close();
   }
-})
+});
 
 //get users by distance
-app.get('/closeby-users', async (req, res) => {
-  const client = new MongoClient(uri)
-  const distance = req.query.distance
+app.get("/closeby-users", async (req, res) => {
+  const client = new MongoClient(uri);
+  const distance = req.query.distance;
 
   try {
-      await client.connect()
-      const database = client.db('app-data')
-      const users = database.collection('users')
-      const query = {distance: {$lte: distance}}
-      const foundUsers = await users.find(query).toArray()
-      res.json(foundUsers)
-
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
+    const query = { distance: { $lte: distance } };
+    const foundUsers = await users.find(query).toArray();
+    res.json(foundUsers);
   } finally {
-      await client.close()
+    await client.close();
   }
-})
+});
 
 //get users by diet
-app.get('/diet-users', async (req, res) => {
-  const client = new MongoClient(uri)
-  const diet = req.query.diet
+app.get("/diet-users", async (req, res) => {
+  const client = new MongoClient(uri);
+  const diet = req.query.diet;
 
   try {
-      await client.connect()
-      const database = client.db('app-data')
-      const users = database.collection('users')
-      const query = {diet: {$eq: diet}}
-      const foundUsers = await users.find(query).toArray()
-      res.json(foundUsers)
-
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
+    const query = { diet: { $eq: diet } };
+    const foundUsers = await users.find(query).toArray();
+    res.json(foundUsers);
   } finally {
-      await client.close()
+    await client.close();
   }
-})
+});
 
 //get users by age
-app.get('/age-users', async (req, res) => {
-  const client = new MongoClient(uri)
-  const age = req.query.age
+app.get("/age-users", async (req, res) => {
+  const client = new MongoClient(uri);
+  const age = req.query.age;
 
   try {
-      await client.connect()
-      const database = client.db('app-data')
-      const users = database.collection('users')
-      const query = {age: {$lte: age}}
-      const foundUsers = await users.find(query).toArray()
-      res.json(foundUsers)
-
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
+    const query = { age: { $lte: age } };
+    const foundUsers = await users.find(query).toArray();
+    res.json(foundUsers);
   } finally {
-      await client.close()
+    await client.close();
   }
-})
+});
 
 // Update User with a match
-app.put('/addmatch', async (req, res) => {
-  const client = new MongoClient(uri)
-  const {userId, matchedUser} = req.body
+app.put("/addmatch", async (req, res) => {
+  const client = new MongoClient(uri);
+  const { userId, matchedUser } = req.body;
 
   try {
-      await client.connect()
-      const database = client.db('app-data')
-      const users = database.collection('users')
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
 
-      const query = {user_id: userId}
-      const updateDocument = {
-          $push: {matches: {user: matchedUser}}
-      }
-      const user = await users.updateOne(query, updateDocument)
-      res.send(user)
+    const query = { user_id: userId };
+    const updateDocument = {
+      $push: { matches: { user: matchedUser } },
+    };
+    const user = await users.updateOne(query, updateDocument);
+    res.send(user);
   } finally {
-      await client.close()
+    await client.close();
   }
-})
+});
 
 // Update User with a like
-app.put('/addlike', async (req, res) => {
-  const client = new MongoClient(uri)
-  const {userId, likedUser} = req.body
+app.put("/addlike", async (req, res) => {
+  const client = new MongoClient(uri);
+  const { userId, likedUser } = req.body;
 
   try {
-      await client.connect()
-      const database = client.db('app-data')
-      const users = database.collection('users')
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
 
-      const query = {user_id: userId}
-      const updateDocument = {
-          $push: {likes: {user: likedUser}}
-      }
-      const user = await users.updateOne(query, updateDocument)
-      res.send(user)
+    const query = { user_id: userId };
+    const updateDocument = {
+      $push: { likes: { user: likedUser } },
+    };
+    const user = await users.updateOne(query, updateDocument);
+    res.send(user);
   } finally {
-      await client.close()
+    await client.close();
   }
-})
-
+});
 
 // Get Messages by from_userId and to_userId
-app.get('/messages', async (req, res) => {
-  const {userId, correspondingUserId} = req.query
-  const client = new MongoClient(uri)
+app.get("/messages", async (req, res) => {
+  const { userId, correspondingUserId } = req.query;
+  const client = new MongoClient(uri);
   try {
-      await client.connect()
-      const database = client.db('app-data')
-      const messages = database.collection('messages')
+    await client.connect();
+    const database = client.db("app-data");
+    const messages = database.collection("messages");
 
-      const query = {
-          from_userId: userId, to_userId: correspondingUserId
-      }
-      const foundMessages = await messages.find(query).toArray()
-      res.json(foundMessages)
-      
+    const query = {
+      from_userId: userId,
+      to_userId: correspondingUserId,
+    };
+    const foundMessages = await messages.find(query).toArray();
+    res.json(foundMessages);
   } finally {
-      await client.close()
+    await client.close();
   }
-})
+});
 
 // Add a Message to our Database
-app.post('/message', async (req, res) => {
-  const client = new MongoClient(uri)
-  const message = req.body.message
+app.post("/message", async (req, res) => {
+  const client = new MongoClient(uri);
+  const message = req.body.message;
 
   try {
-      await client.connect()
-      const database = client.db('app-data')
-      const messages = database.collection('messages')
+    await client.connect();
+    const database = client.db("app-data");
+    const messages = database.collection("messages");
 
-      const insertedMessage = await messages.insertOne(message)
-      res.send(insertedMessage)
+    const insertedMessage = await messages.insertOne(message);
+    res.send(insertedMessage);
   } finally {
-      await client.close()
+    await client.close();
   }
-})
-
+});
 
 app.listen(port, () => console.log(`Server Started at ${port}`));
