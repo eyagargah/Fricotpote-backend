@@ -74,6 +74,7 @@ app.put("/user", async (req, res) => {
         url: formData.url,
         about: formData.about,
         matches: formData.matches,
+        likes : formData.likes
       },
     };
 
@@ -306,6 +307,28 @@ app.put('/addmatch', async (req, res) => {
       await client.close()
   }
 })
+
+// Update User with a match
+app.put('/addmatch', async (req, res) => {
+  const client = new MongoClient(uri)
+  const {userId, matchedUser} = req.body
+
+  try {
+      await client.connect()
+      const database = client.db('app-data')
+      const users = database.collection('users')
+
+      const query = {user_id: userId}
+      const updateDocument = {
+          $push: {matches: {user: matchedUser}}
+      }
+      const user = await users.updateOne(query, updateDocument)
+      res.send(user)
+  } finally {
+      await client.close()
+  }
+})
+
 
 // Get Messages by from_userId and to_userId
 app.get('/messages', async (req, res) => {
