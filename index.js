@@ -112,7 +112,7 @@ app.put("/user-preferences", async (req, res) => {
   }
 });
 
-/**********Account Management**************/
+/************************************Account Management******************************************************/
 //sign up
 app.post("/signup", async (req, res) => {
   const client = new MongoClient(uri);
@@ -211,6 +211,7 @@ app.get("/users", async (req, res) => {
   }
 });
 
+/*****************************************************Preferences*************************************************** */
 //get users by gender
 app.get("/gendered-users", async (req, res) => {
   const client = new MongoClient(uri);
