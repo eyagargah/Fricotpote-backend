@@ -308,10 +308,10 @@ app.put('/addmatch', async (req, res) => {
   }
 })
 
-// Update User with a match
-app.put('/addmatch', async (req, res) => {
+// Update User with a like
+app.put('/addlike', async (req, res) => {
   const client = new MongoClient(uri)
-  const {userId, matchedUser} = req.body
+  const {userId, likedUser} = req.body
 
   try {
       await client.connect()
@@ -320,7 +320,7 @@ app.put('/addmatch', async (req, res) => {
 
       const query = {user_id: userId}
       const updateDocument = {
-          $push: {matches: {user: matchedUser}}
+          $push: {likes: {user: likedUser}}
       }
       const user = await users.updateOne(query, updateDocument)
       res.send(user)
