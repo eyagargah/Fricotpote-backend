@@ -360,4 +360,27 @@ app.post("/message", async (req, res) => {
   }
 });
 
+
+// Add an offer  to our Database
+//fix this
+app.post("/offer", async (req, res) => {
+  const client = new MongoClient(uri);
+  const { userId, matchedUser } = req.body;
+
+  try {
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
+
+    const query = { user_id: userId };
+    const updateDocument = {
+      $push: { offers: { user: matchedUser } },
+    };
+    const user = await users.updateOne(query, updateDocument);
+    res.send(user);
+  } finally {
+    await client.close();
+  }
+});
+
 app.listen(port, () => console.log(`Server Started at ${port}`));
