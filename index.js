@@ -362,10 +362,9 @@ app.post("/message", async (req, res) => {
 
 
 // Add an offer  to our Database
-//fix this
-app.post("/offer", async (req, res) => {
+app.put("/addoffer", async (req, res) => {
   const client = new MongoClient(uri);
-  const { userId, matchedUser } = req.body;
+  const { userId, offer } = req.body;
 
   try {
     await client.connect();
@@ -374,7 +373,7 @@ app.post("/offer", async (req, res) => {
 
     const query = { user_id: userId };
     const updateDocument = {
-      $push: { offers: { user: matchedUser } },
+      $push: { offers: { offer: offer } },
     };
     const user = await users.updateOne(query, updateDocument);
     res.send(user);
