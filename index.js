@@ -373,7 +373,7 @@ app.put("/addoffer", async (req, res) => {
 
     const query = { user_id: userId };
     const updateDocument = {
-      $push: { offers: { offer: offer } },
+      $push: { offer: offer },
     };
     const user = await users.updateOne(query, updateDocument);
     res.send(user);
