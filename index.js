@@ -75,6 +75,7 @@ app.put("/user", async (req, res) => {
         about: formData.about,
         matches: formData.matches,
         likes: formData.likes,
+        offer:formData.offer
       },
     };
 
@@ -360,26 +361,5 @@ app.post("/message", async (req, res) => {
   }
 });
 
-
-// Add an offer  to our Database
-app.put("/addoffer", async (req, res) => {
-  const client = new MongoClient(uri);
-  const { userId, offer } = req.body;
-
-  try {
-    await client.connect();
-    const database = client.db("app-data");
-    const users = database.collection("users");
-
-    const query = { user_id: userId };
-    const updateDocument = {
-      $push: { offer: offer },
-    };
-    const user = await users.updateOne(query, updateDocument);
-    res.send(user);
-  } finally {
-    await client.close();
-  }
-});
 
 app.listen(port, () => console.log(`Server Started at ${port}`));
