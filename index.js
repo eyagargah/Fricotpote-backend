@@ -375,7 +375,8 @@ app.put("/addoffer", async (req, res) => {
     const updateDocument = {
       $push: {offer:{
         date: formData.date,
-        dateTime:formData.dateTime
+        dateTime:formData.dateTime,
+        payment: formData.payment
       }}
     };
     const user = await users.updateOne(query, updateDocument);
