@@ -287,7 +287,7 @@ app.put("/addmatch", async (req, res) => {
   const client = new MongoClient(uri);
   const { userId, matchedUser } = req.body;
 
-  try {
+  try { 
     await client.connect();
     const database = client.db("app-data");
     const users = database.collection("users");
@@ -373,7 +373,7 @@ app.put("/addoffer", async (req, res) => {
 
     const query = { user_id: formData.user_id };
     const updateDocument = {
-      $push: {offer:{
+      $set: {offer:{
         date: formData.date,
         dateTime:formData.dateTime,
         payment: formData.payment
